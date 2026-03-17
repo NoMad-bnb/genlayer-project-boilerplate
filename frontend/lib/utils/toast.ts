@@ -89,11 +89,10 @@ export const promise = <T>(
   },
   options?: ExternalToast
 ) => {
-  return sonnerToast.promise(promise, {
+ return sonnerToast.promise(promise, {
     loading: messages.loading,
     success: messages.success,
     error: messages.error,
-  }, {
     ...defaultOptions,
     ...options,
   });
