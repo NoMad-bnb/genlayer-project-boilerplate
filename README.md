@@ -120,6 +120,19 @@ Each validator runs a different AI model (GPT, Claude, Gemini, etc.) and votes o
 - [GenLayer Docs](https://docs.genlayer.com/)
 - [genlayer-js SDK](https://github.com/yeagerai/genlayer-js)
 
+## 🗺️ Roadmap
+
+> The following is a list of potential future improvements. These are ideas and explorations, not commitments.
+
+- [ ] **Phase 2** — Confidence percentage, validator names, response time display
+- [ ] **Phase 3** — Scan history per session
+- [ ] **Phase 4** — Wallet integration (MetaMask)
+- [ ] **Phase 5** — Speed & accuracy improvements
+- [ ] **Phase 6** — Developer API
+- [ ] **Phase 7** — Growth & partnerships
+- [ ] **Phase 8** — Image detection support 🔜
+- [ ] **Phase 9** — Token rewards (DET-X) 🔜
+
 ## 📜 License
 
 MIT License — see [LICENSE](LICENSE) for details.
