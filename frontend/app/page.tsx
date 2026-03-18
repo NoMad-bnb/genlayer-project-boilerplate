@@ -88,7 +88,7 @@ export default function HomePage() {
           {result && (
             <div className="glass-card p-6 mt-6 space-y-4">
               <h2 className="text-2xl font-bold">Result</h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <p className="text-muted-foreground text-sm">Type</p>
                   <p className={`text-2xl font-bold ${result.content_type === "Human" ? "text-green-400" : "text-red-400"}`}>
@@ -99,7 +99,23 @@ export default function HomePage() {
                   <p className="text-muted-foreground text-sm">Quality Score</p>
                   <p className="text-2xl font-bold text-accent">{result.score}/10</p>
                 </div>
+                <div className="space-y-1">
+                  <p className="text-muted-foreground text-sm">Confidence</p>
+                  <p className="text-2xl font-bold text-yellow-400">{result.confidence}%</p>
+                </div>
               </div>
+
+              {/* Confidence Bar */}
+              <div className="space-y-1">
+                <p className="text-muted-foreground text-sm">Confidence Level</p>
+                <div className="w-full bg-white/10 rounded-full h-3">
+                  <div
+                    className={`h-3 rounded-full transition-all ${result.content_type === "Human" ? "bg-green-400" : "bg-red-400"}`}
+                    style={{ width: `${result.confidence}%` }}
+                  />
+                </div>
+              </div>
+
               <div className="space-y-1">
                 <p className="text-muted-foreground text-sm">Reason</p>
                 <p className="text-white">{result.reason}</p>

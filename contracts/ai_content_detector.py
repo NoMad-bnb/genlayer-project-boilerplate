@@ -15,11 +15,12 @@ class AIContentDetector(gl.Contract):
         prompt = f"""
 Is the following text AI-generated or Human-written?
 Reply with ONLY this exact JSON, no other text:
-{{"content_type": "AI", "score": 7, "reason": "one sentence"}}
+{{"content_type": "AI", "score": 7, "confidence": 85, "reason": "one sentence"}}
 
 Replace the values based on your analysis.
 content_type must be exactly "AI" or "Human".
 score must be a number from 1 to 10.
+confidence must be a number from 0 to 100 representing how confident you are.
 reason must be one short sentence.
 
 Text:
