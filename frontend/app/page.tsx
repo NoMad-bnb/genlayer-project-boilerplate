@@ -14,9 +14,19 @@ const client = createClient({
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`;
 
+interface ScanResult {
+  text: string;
+  content_type: string;
+  score: number;
+  confidence: number;
+  reason: string;
+  timestamp: string;
+}
+
 export default function HomePage() {
   const [text, setText] = useState("");
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<ScanResult | null>(null);
+  const [history, setHistory] = useState<ScanResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -46,7 +56,15 @@ export default function HomePage() {
         args: [],
       });
 
-      setResult(JSON.parse(data as string));
+      const parsed = JSON.parse(data as string);
+      const newResult: ScanResult = {
+        ...parsed,
+        text: text,
+        timestamp: new Date().toLocaleTimeString(),
+      };
+
+      setResult(newResult);
+      setHistory((prev) => [newResult, ...prev]);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -104,8 +122,6 @@ export default function HomePage() {
                   <p className="text-2xl font-bold text-yellow-400">{result.confidence}%</p>
                 </div>
               </div>
-
-              {/* Confidence Bar */}
               <div className="space-y-1">
                 <p className="text-muted-foreground text-sm">Confidence Level</p>
                 <div className="w-full bg-white/10 rounded-full h-3">
@@ -115,10 +131,41 @@ export default function HomePage() {
                   />
                 </div>
               </div>
-
               <div className="space-y-1">
                 <p className="text-muted-foreground text-sm">Reason</p>
                 <p className="text-white">{result.reason}</p>
+              </div>
+            </div>
+          )}
+
+          {history.length > 0 && (
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold">Scan History</h2>
+                <button
+                  onClick={() => setHistory([])}
+                  className="text-sm text-muted-foreground hover:text-red-400 transition-colors"
+                >
+                  Clear
+                </button>
+              </div>
+              <div className="space-y-3">
+                {history.map((item, index) => (
+                  <div key={index} className="glass-card p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className={`font-bold ${item.content_type === "Human" ? "text-green-400" : "text-red-400"}`}>
+                        {item.content_type}
+                      </span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-accent text-sm">{item.score}/10</span>
+                        <span className="text-yellow-400 text-sm">{item.confidence}%</span>
+                        <span className="text-muted-foreground text-xs">{item.timestamp}</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground truncate">{item.text}</p>
+                    <p className="text-xs text-white/70">{item.reason}</p>
+                  </div>
+                ))}
               </div>
             </div>
           )}
