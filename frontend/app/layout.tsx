@@ -18,8 +18,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "GenLayer Football Market",
-  description: "AI-powered football match predictions on GenLayer blockchain. Create bets, make predictions, and compete for points.",
+  title: "AI Content Detector",
+description: "Detect if text is AI-generated or Human-written using GenLayer blockchain.",
   manifest: "/site.webmanifest",
   icons: {
     icon: [
