@@ -1,7 +1,7 @@
 {
-  "name": "genlayer-football-betting",
+  "name": "ai-content-detector",
   "version": "1.0.0",
-  "description": "GenLayer Football Betting - AI-powered prediction betting on GenLayer blockchain.",
+  "description": "AI Content Detector - Detect AI-generated vs Human-written text using GenLayer blockchain.",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",

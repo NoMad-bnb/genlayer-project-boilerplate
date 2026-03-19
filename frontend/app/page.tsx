@@ -2,15 +2,8 @@
 
 import { Navbar } from "@/components/Navbar";
 import { useState } from "react";
-import { createClient, createAccount } from "genlayer-js";
-import { studionet } from "genlayer-js/chains";
 import { TransactionStatus } from "genlayer-js/types";
-
-const account = createAccount();
-const client = createClient({
-  chain: studionet,
-  account: account,
-});
+import { createGenLayerClient, getAccounts } from "@/lib/genlayer/client";
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`;
 
@@ -36,6 +29,15 @@ export default function HomePage() {
     setResult(null);
     setError("");
     try {
+      const accounts = await getAccounts();
+      if (!accounts || accounts.length === 0) {
+        setError("Please connect your wallet first!");
+        setLoading(false);
+        return;
+      }
+
+      const client = createGenLayerClient(accounts[0]);
+
       const txHash = await client.writeContract({
         address: CONTRACT_ADDRESS,
         functionName: "analyze_content",

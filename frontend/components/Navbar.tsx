@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Logo, LogoMark } from "./Logo";
+import { AccountPanel } from "./AccountPanel";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -69,6 +70,7 @@ export function Navbar() {
                 <Logo size="md" className="hidden md:flex" />
                 <span className="text-lg md:text-xl font-bold ml-2">AI Content Detector</span>
               </div>
+              <AccountPanel />
             </div>
           </div>
         </div>
