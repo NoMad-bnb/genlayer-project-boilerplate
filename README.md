@@ -124,9 +124,9 @@ Each validator runs a different AI model (GPT, Claude, Gemini, etc.) and votes o
 
 > The following is a list of potential future improvements. These are ideas and explorations, not commitments.
 
-- [ ] **Phase 2** — Confidence percentage, validator names, response time display
-- [ ] **Phase 3** — Scan history per session
-- [ ] **Phase 4** — Wallet integration (MetaMask)
+- [x] **Phase 2** — Confidence percentage and confidence bar
+- [x] **Phase 3** — Scan history per session
+- [x] **Phase 4** — Wallet integration (MetaMask)
 - [ ] **Phase 5** — Speed & accuracy improvements
 - [ ] **Phase 6** — Developer API
 - [ ] **Phase 7** — Growth & partnerships
