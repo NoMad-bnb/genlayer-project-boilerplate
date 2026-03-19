@@ -1,4 +1,4 @@
-# AI Content Detector — Built on GenLayer
+# AI Content Detector: Built on GenLayer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/license/mit/)
 [![Discord](https://img.shields.io/badge/Discord-Join%20us-5865F2?logo=discord&logoColor=white)](https://discord.gg/8Jm4v89VAu)
@@ -13,11 +13,14 @@ It uses GenLayer's **Intelligent Contracts** (Python smart contracts with AI cap
 
 ## ✨ Features
 
-- Paste any text and get an instant AI/Human classification
+- Paste any text and get an AI/Human classification
+- Confidence percentage with visual bar
 - Quality score from 1 to 10
 - Reason for the classification
+- Persistent scan history across sessions
+- Guest mode (no wallet needed) and Verified mode (MetaMask)
 - Result verified by 5 AI validators on-chain
-- Built with Next.js 15 + TypeScript + genlayer-js
+- Built with Next.js 15, TypeScript, and genlayer-js
 
 ## 🧠 How it Works
 
@@ -31,7 +34,7 @@ It uses GenLayer's **Intelligent Contracts** (Python smart contracts with AI cap
 ## 🛠️ Requirements
 
 - [Node.js](https://nodejs.org/) v18+
-- A running GenLayer Studio — use the hosted version at [studio.genlayer.com](https://studio.genlayer.com)
+- A running GenLayer Studio: use the hosted version at [studio.genlayer.com](https://studio.genlayer.com)
 
 ## 🚀 Getting Started
 
@@ -95,11 +98,14 @@ class AIContentDetector(gl.Contract):
 ```
 
 Key concepts used:
-- `gl.Contract` — base class for all GenLayer contracts
-- `gl.nondet.exec_prompt` — calls an AI model with a prompt
-- `gl.eq_principle.prompt_comparative` — ensures validators agree on the result
-- `@gl.public.write` — a function that modifies state
-- `@gl.public.view` — a read-only function
+
+| Concept | Description |
+|---|---|
+| `gl.Contract` | Base class for all GenLayer contracts |
+| `gl.nondet.exec_prompt` | Calls an AI model with a prompt |
+| `gl.eq_principle.prompt_comparative` | Ensures validators agree on the result |
+| `@gl.public.write` | A function that modifies state |
+| `@gl.public.view` | A read-only function |
 
 ## 🗳️ Optimistic Democracy Consensus
 
@@ -124,15 +130,13 @@ Each validator runs a different AI model (GPT, Claude, Gemini, etc.) and votes o
 
 > The following is a list of potential future improvements. These are ideas and explorations, not commitments.
 
-- [x] **Phase 2** — Confidence percentage and confidence bar
-- [x] **Phase 3** — Scan history per session
-- [x] **Phase 4** — Wallet integration (MetaMask)
-- [ ] **Phase 5** — Speed & accuracy improvements
-- [ ] **Phase 6** — Developer API
-- [ ] **Phase 7** — Growth & partnerships
-- [ ] **Phase 8** — Image detection support 🔜
-- [ ] **Phase 9** — Token rewards (DET-X) 🔜
+- [x] **Phase 2:** Confidence percentage and confidence bar
+- [x] **Phase 3:** Scan history per session
+- [x] **Phase 4:** Wallet integration (MetaMask)
+- [x] **Phase 5:** Guest and Verified modes with persistent history
+- [ ] **Phase 6:** Developer API
+- [ ] **Phase 7:** Image detection support
 
 ## 📜 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License: see [LICENSE](LICENSE) for details.

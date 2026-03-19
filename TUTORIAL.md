@@ -47,18 +47,18 @@ This tells GenLayer: as long as the key value matches, the outputs are equivalen
 
 ## 🛠️ Part 1: Setup
 
-1. Open [studio.genlayer.com](https://studio.genlayer.com) in your browser — no installation needed
-2. You will see the code editor, file list, and logs panel
-3. Click on `wizard_of_coin.py` to explore a basic example contract
+1. Open [studio.genlayer.com](https://studio.genlayer.com) in your browser. No installation needed.
+2. You will see the code editor, file list, and logs panel.
+3. Click on `wizard_of_coin.py` to explore a basic example contract.
 
 ## 📄 Part 2: Write the Intelligent Contract
 
-### Step 1 — Create a new contract
+### Step 1: Create a new contract
 
 Click the **New Contract** icon at the top of the left panel and name it:
 `ai_content_detector.py`
 
-### Step 2 — Paste this code
+### Step 2: Paste this code
 ```python
 # v0.1.0
 # { "Depends": "py-genlayer:latest" }
@@ -106,7 +106,7 @@ Text to analyze:
         return self.last_result
 ```
 
-### Step 3 — Key concepts
+### Step 3: Key concepts
 
 | Concept | What it does |
 |---|---|
@@ -122,14 +122,14 @@ Text to analyze:
 1. Click **Run and Debug** in the left sidebar
 2. Click **Deploy new instance**
 3. Watch the consensus happen: `PENDING → PROPOSING → COMMITTING → REVEALING → ACCEPTED`
-4. Notice the **Validator Set** — 5 different AI models all vote ✅
+4. Notice the **Validator Set**: 5 different AI models all vote ✅
 5. Copy the contract address: `Deployed at 0x...`
 
 > ⚠️ You may see `ERROR` in the Result field after deployment. This is normal. It just means the `__init__` function returned no value. If the Consensus History shows **ACCEPTED** and all validators show **Agree**, your contract deployed successfully.
 
 ## 🎨 Part 4: Build the Frontend
 
-### Step 1 — Clone and setup
+### Step 1: Clone and setup
 ```bash
 git clone https://github.com/NoMad-bnb/genlayer-project-boilerplate.git
 cd genlayer-project-boilerplate/frontend
@@ -149,14 +149,14 @@ Edit `.env`:
 NEXT_PUBLIC_CONTRACT_ADDRESS=your_contract_address_here
 ```
 
-### Step 2 — Install and run
+### Step 2: Install and run
 ```bash
 npm install
 npm install genlayer-js
 npm run dev
 ```
 
-### Step 3 — How the frontend connects to the contract
+### Step 3: How the frontend connects to the contract
 ```tsx
 import { createClient, createAccount } from "genlayer-js";
 import { studionet } from "genlayer-js/chains";
@@ -201,8 +201,9 @@ Open [http://localhost:3000](http://localhost:3000), paste any text, and click *
 The project has been extended with additional features beyond this tutorial:
 
 - Confidence percentage showing how confident the AI is in its decision
-- Scan history keeping track of all analyses in the current session
-- MetaMask wallet integration to connect your wallet to the blockchain
+- Persistent scan history that stays across sessions
+- Guest mode for quick analysis without a wallet
+- Verified mode with MetaMask for on-chain verified results
 
 Check the full updated project:
 👉 https://github.com/NoMad-bnb/genlayer-project-boilerplate
