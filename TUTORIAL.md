@@ -1,6 +1,6 @@
 # From Zero to GenLayer: Build an AI Content Detector dApp
 
-In this tutorial, you will build a full-stack dApp on **GenLayer** from scratch. By the end, you will have a working app that detects whether any text is AI-generated or Human-written — with the result verified on-chain by multiple AI validators.
+In this tutorial, you will build a full-stack dApp on **GenLayer** from scratch. By the end, you will have a working app that detects whether any text is AI-generated or Human-written, with the result verified on-chain by multiple AI validators.
 
 ## 🎯 What You Will Learn
 
@@ -10,8 +10,6 @@ In this tutorial, you will build a full-stack dApp on **GenLayer** from scratch.
 - How to write an **Intelligent Contract** in Python
 - How to deploy using **GenLayer Studio**
 - How to connect a frontend using **genlayer-js**
-
----
 
 ## 🧠 What is GenLayer?
 
@@ -26,8 +24,6 @@ GenLayer is a blockchain that lets you write smart contracts in **Python** with 
 
 These contracts are called **Intelligent Contracts**.
 
----
-
 ## 🗳️ Optimistic Democracy Consensus
 
 When you call a contract function, **5 validators** independently run the same code using different AI models (GPT, Claude, Gemini, DeepSeek, etc.) and vote on the result:
@@ -35,10 +31,7 @@ When you call a contract function, **5 validators** independently run the same c
 PENDING → PROPOSING → COMMITTING → REVEALING → ACCEPTED
 ```
 
-If the majority agree → result is finalized on-chain.
-If they disagree → a new round starts with different validators.
-
----
+If the majority agree, the result is finalized on-chain. If they disagree, a new round starts with different validators.
 
 ## ⚖️ Equivalence Principle
 
@@ -52,15 +45,11 @@ gl.eq_principle.prompt_comparative(
 
 This tells GenLayer: as long as the key value matches, the outputs are equivalent.
 
----
-
 ## 🛠️ Part 1: Setup
 
 1. Open [studio.genlayer.com](https://studio.genlayer.com) in your browser — no installation needed
 2. You will see the code editor, file list, and logs panel
 3. Click on `wizard_of_coin.py` to explore a basic example contract
-
----
 
 ## 📄 Part 2: Write the Intelligent Contract
 
@@ -128,8 +117,6 @@ Text to analyze:
 | `gl.nondet.exec_prompt` | Calls an AI model with a prompt |
 | `gl.eq_principle.prompt_comparative` | Ensures validators agree |
 
----
-
 ## 🚀 Part 3: Deploy the Contract
 
 1. Click **Run and Debug** in the left sidebar
@@ -138,9 +125,7 @@ Text to analyze:
 4. Notice the **Validator Set** — 5 different AI models all vote ✅
 5. Copy the contract address: `Deployed at 0x...`
 
-> ⚠️ You may see `ERROR` in the Result field after deployment — this is normal. It just means the `__init__` function returned no value. If the Consensus History shows **ACCEPTED** and all validators show **Agree**, your contract deployed successfully.
-
----
+> ⚠️ You may see `ERROR` in the Result field after deployment. This is normal. It just means the `__init__` function returned no value. If the Consensus History shows **ACCEPTED** and all validators show **Agree**, your contract deployed successfully.
 
 ## 🎨 Part 4: Build the Frontend
 
@@ -202,8 +187,6 @@ const data = await client.readContract({
 
 Open [http://localhost:3000](http://localhost:3000), paste any text, and click **Analyze Text**!
 
----
-
 ## ✅ What You Learned
 
 - What GenLayer is and how it differs from traditional blockchains
@@ -213,7 +196,19 @@ Open [http://localhost:3000](http://localhost:3000), paste any text, and click *
 - How to deploy using **GenLayer Studio**
 - How to connect a frontend using **genlayer-js**
 
----
+## 🚀 What's Next?
+
+The project has been extended with additional features beyond this tutorial:
+
+- Confidence percentage showing how confident the AI is in its decision
+- Scan history keeping track of all analyses in the current session
+- MetaMask wallet integration to connect your wallet to the blockchain
+
+Check the full updated project:
+👉 https://github.com/NoMad-bnb/genlayer-project-boilerplate
+
+Live demo:
+👉 https://ai-content-detector-genlayer.vercel.app
 
 ## 🔗 Resources
 
