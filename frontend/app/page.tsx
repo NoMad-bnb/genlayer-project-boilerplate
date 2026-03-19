@@ -1,11 +1,15 @@
 "use client";
 
 import { Navbar } from "@/components/Navbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TransactionStatus } from "genlayer-js/types";
 import { createGenLayerClient, getAccounts } from "@/lib/genlayer/client";
+import { createClient, createAccount } from "genlayer-js";
+import { studionet } from "genlayer-js/chains";
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`;
+const HISTORY_KEY_GUEST = "scan_history_guest";
+const HISTORY_KEY_VERIFIED = "scan_history_verified";
 
 interface ScanResult {
   text: string;
@@ -14,6 +18,7 @@ interface ScanResult {
   confidence: number;
   reason: string;
   timestamp: string;
+  mode: string;
 }
 
 export default function HomePage() {
@@ -22,6 +27,26 @@ export default function HomePage() {
   const [history, setHistory] = useState<ScanResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [mode, setMode] = useState<"verified" | "guest">("guest");
+
+  // Load history from localStorage when mode changes
+  useEffect(() => {
+    const key = mode === "guest" ? HISTORY_KEY_GUEST : HISTORY_KEY_VERIFIED;
+    const saved = localStorage.getItem(key);
+    setHistory(saved ? JSON.parse(saved) : []);
+  }, [mode]);
+
+  const saveHistory = (newHistory: ScanResult[], currentMode: string) => {
+    const key = currentMode === "guest" ? HISTORY_KEY_GUEST : HISTORY_KEY_VERIFIED;
+    localStorage.setItem(key, JSON.stringify(newHistory));
+    setHistory(newHistory);
+  };
+
+  const clearHistory = () => {
+    const key = mode === "guest" ? HISTORY_KEY_GUEST : HISTORY_KEY_VERIFIED;
+    localStorage.removeItem(key);
+    setHistory([]);
+  };
 
   const analyzeText = async () => {
     if (!text.trim()) return;
@@ -29,14 +54,23 @@ export default function HomePage() {
     setResult(null);
     setError("");
     try {
-      const accounts = await getAccounts();
-      if (!accounts || accounts.length === 0) {
-        setError("Please connect your wallet first!");
-        setLoading(false);
-        return;
-      }
+      let client;
 
-      const client = createGenLayerClient(accounts[0]);
+      if (mode === "verified") {
+        const disconnected = localStorage.getItem("wallet_disconnected") === "true";
+        const accounts = await getAccounts();
+        if (disconnected || !accounts || accounts.length === 0) {
+          setError("Please connect your wallet to use Verified mode.");
+          setLoading(false);
+          return;
+        }
+        client = createGenLayerClient(accounts[0]);
+      } else {
+        client = createClient({
+          chain: studionet,
+          account: createAccount(),
+        });
+      }
 
       const txHash = await client.writeContract({
         address: CONTRACT_ADDRESS,
@@ -63,10 +97,12 @@ export default function HomePage() {
         ...parsed,
         text: text,
         timestamp: new Date().toLocaleTimeString(),
+        mode: mode === "verified" ? "Verified" : "Guest",
       };
 
+      const newHistory = [newResult, ...history];
+      saveHistory(newHistory, mode);
       setResult(newResult);
-      setHistory((prev) => [newResult, ...prev]);
     } catch (err: any) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -89,6 +125,35 @@ export default function HomePage() {
           </div>
 
           <div className="glass-card p-6 space-y-4">
+            <div className="flex rounded-lg overflow-hidden border border-white/10">
+              <button
+                onClick={() => setMode("guest")}
+                className={`flex-1 py-2 text-sm font-semibold transition-all ${
+                  mode === "guest"
+                    ? "bg-accent text-white"
+                    : "bg-white/5 text-muted-foreground hover:bg-white/10"
+                }`}
+              >
+                Guest
+              </button>
+              <button
+                onClick={() => setMode("verified")}
+                className={`flex-1 py-2 text-sm font-semibold transition-all ${
+                  mode === "verified"
+                    ? "bg-accent text-white"
+                    : "bg-white/5 text-muted-foreground hover:bg-white/10"
+                }`}
+              >
+                Verified
+              </button>
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              {mode === "guest"
+                ? "No wallet required. Results are not tied to your identity."
+                : "Requires MetaMask. Results are verified on-chain and linked to your wallet."}
+            </p>
+
             <textarea
               className="w-full h-40 p-4 rounded-lg bg-white/5 border border-white/10 text-white resize-none focus:outline-none focus:border-accent"
               placeholder="Paste any text here to analyze..."
@@ -100,14 +165,19 @@ export default function HomePage() {
               disabled={loading || !text.trim()}
               className="w-full py-3 px-6 rounded-lg bg-accent text-white font-bold hover:opacity-90 disabled:opacity-50 transition-all"
             >
-              {loading ? "Analyzing... (this may take a minute)" : "Analyze Text"}
+              {loading ? "Analyzing..." : "Analyze Text"}
             </button>
             {error && <p className="text-red-400 text-sm">{error}</p>}
           </div>
 
           {result && (
             <div className="glass-card p-6 mt-6 space-y-4">
-              <h2 className="text-2xl font-bold">Result</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">Result</h2>
+                <span className="text-xs px-3 py-1 rounded-full border border-white/10 text-muted-foreground">
+                  {result.mode}
+                </span>
+              </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-1">
                   <p className="text-muted-foreground text-sm">Type</p>
@@ -145,7 +215,7 @@ export default function HomePage() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold">Scan History</h2>
                 <button
-                  onClick={() => setHistory([])}
+                  onClick={clearHistory}
                   className="text-sm text-muted-foreground hover:text-red-400 transition-colors"
                 >
                   Clear
@@ -161,6 +231,9 @@ export default function HomePage() {
                       <div className="flex items-center gap-3">
                         <span className="text-accent text-sm">{item.score}/10</span>
                         <span className="text-yellow-400 text-sm">{item.confidence}%</span>
+                        <span className="text-muted-foreground text-xs border border-white/10 px-2 rounded-full">
+                          {item.mode}
+                        </span>
                         <span className="text-muted-foreground text-xs">{item.timestamp}</span>
                       </div>
                     </div>
