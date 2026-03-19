@@ -113,7 +113,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-20 pb-12 px-4 md:px-6 lg:px-8">
+      <main className="grow pt-20 pb-12 px-4 md:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
